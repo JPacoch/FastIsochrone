@@ -1,6 +1,0 @@
-pandas==1.1.5
-matplotlib==3.3.3
-networkx==2.5.1
-osmnx==1.0.1
-descartes==1.1.0
-shapely==1.7.1
