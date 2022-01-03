@@ -29,7 +29,7 @@ class CLI(Cmd):
     When ready to quit enter:                        quit
 
     Type ? to list commands."""
-    prompt = 'FastIsochrone 0.1.0> '
+    prompt = 'FastIsochrone 0.1.1> '
 
     def do_create_convexhull_iso(self, empty_args):
         """
