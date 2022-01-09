@@ -5,19 +5,17 @@ import osmnx as ox
 
 from descartes import PolygonPatch
 from shapely.geometry import Point, LineString, Polygon
-from dataloader import latlonTuple
-from mainclass import InitClass
+from .dataloader import latlonTuple
+from .mainclass import InitClass
 
 ox.config(log_console=True, use_cache=True)
 ox.__version__
 
-class BufferIsochrones(InitClass):
-    def __init__(self, networkType, tripTimes, travelSpeed, epsgCode, networkDistance, edgeBuffer, nodeBuffer):
+class DetailedIsochrones(InitClass):
+    def __init__(self, networkType, tripTimes, travelSpeed, epsgCode, networkDistance):
         super().__init__(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
-        self.edgeBuffer = edgeBuffer
-        self.nodeBuffer = nodeBuffer
 
-    def createBufferIsochrones(self, plot=False):
+    def createDetailedIsochrones(self, plot=False):
         for railwayStation in latlonTuple:
             self.G = ox.graph_from_point(railwayStation, dist=self.networkDistance,
             dist_type='network',
@@ -37,7 +35,7 @@ class BufferIsochrones(InitClass):
             for u, v, k, data in self.G.edges(data=True, keys=True):
                 data['time'] = data['length'] / self.metersPerMinute #utworzenie atrybutu stanowiącego czas przejścia każdego odcinka w sieci drogowej
 
-            def make_iso_polys(G, edge_buff=150, node_buff=10, infill=False):
+            def make_iso_polys(G, edge_buff=25, node_buff=50, infill=False):
                 for tripTime in sorted(self.tripTimes, reverse=True):
                     self.egoGraph = nx.ego_graph(self.G, self.centerNode, radius=tripTime, distance='time')
                     self.nodePoints = [Point((data['x'], data['y'])) for node, data in self.egoGraph.nodes(data=True)]
@@ -62,15 +60,16 @@ class BufferIsochrones(InitClass):
                     self.isochronePolygons.append(new_iso)
                 return self.isochronePolygons
 
-            self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=self.edgeBuffer , node_buff=self.nodeBuffer, infill=False)
+            self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=25, node_buff=0, infill=True)
+
             if plot: 
                 fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
                                         node_size=0, bgcolor='k')
                 for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
                     patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
                     ax.add_patch(patch)
-            
-                    plt.show()
+        
+                plt.show()
             else:
                 continue
 
@@ -96,15 +95,16 @@ class BufferIsochrones(InitClass):
             fig, ax = ox.plot_graph(self.G, node_color=self.plotNodeColour, node_size=self.plotNodeSize, node_alpha=0.6, node_zorder=2,
                                     bgcolor='k', edge_linewidth=0.5, edge_color='#999999')
             plt.show()
-
-    def plotBufferIsochrone(self):
-        fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
-                                        node_size=0, bgcolor='k')
-        for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
-            patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
-            ax.add_patch(patch)
+        
+    def plotDetailedIsochrone(self):
+            fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
+                                    node_size=0, bgcolor='k')
+            for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
+                patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+                ax.add_patch(patch)
     
             plt.show()
+
 
     def export(self, filename):
         #zapisanie poligonów izochron do georamki danych

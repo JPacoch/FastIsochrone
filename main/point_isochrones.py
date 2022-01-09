@@ -5,8 +5,8 @@ import osmnx as ox
 
 from descartes import PolygonPatch
 from shapely.geometry import Point, LineString, Polygon
-from dataloader import latlonTuple
-from mainclass import InitClass
+from .dataloader import latlonTuple
+from .mainclass import InitClass
 
 ox.config(log_console=True, use_cache=True)
 ox.__version__

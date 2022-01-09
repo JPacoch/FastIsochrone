@@ -6,10 +6,10 @@ Command line interface - interactive.
 import sys
 import os
 from cmd import Cmd
-from convex_hull_isochrones import ConvexHullIsochrones
-from detailed_isochrones import DetailedIsochrones
-from buffer_isochrones import BufferIsochrones
-from config import PROJECT_DIR, networkType, tripTimes, travelSpeed, epsgCode, networkDistance
+from main.convex_hull_isochrones import ConvexHullIsochrones
+from main.detailed_isochrones import DetailedIsochrones
+from main.buffer_isochrones import BufferIsochrones
+from main.config import PROJECT_DIR, networkType, tripTimes, travelSpeed, epsgCode, networkDistance
 
 
 class CLI(Cmd):
@@ -23,13 +23,13 @@ class CLI(Cmd):
 ██║░░░░░██║░░██║██████╔╝░░░██║░░░██║██████╔╝╚█████╔╝╚█████╔╝██║░░██║██║░░██║╚█████╔╝██║░╚███║███████╗
 ╚═╝░░░░░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝╚══════╝
 
-    Welcome to FastIsochrone 0.1.1
+    Welcome to FastIsochrone 0.2.0
     Creator homepage:                                https://jpacoch.github.io
     Help is availible with the command:              help
-    When ready to quit enter:                        quit
+    When ready to quit, enter:                       quit
 
     Type ? to list commands."""
-    prompt = 'FastIsochrone 0.1.1> '
+    prompt = 'FastIsochrone 0.2.0> '
 
     def do_create_convexhull_iso(self, empty_args):
         """

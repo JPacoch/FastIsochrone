@@ -58,7 +58,7 @@ Three main methods of isochrone creation are availible within FastIsochrone tool
 
 Both simple and detailed methods needs five arguments which can be chosen in either config.py or while creating a new class instance:
 
-1. tripTimes - an list of integers that indicates the travel intervals in minutes
+1. tripTimes - a list of integers that indicates the travel intervals in minutes
 2. networkType - a string variable that determines a type of network based on chosen mode of transportation (eg. drive, walk, bike)
 3. travelSpeed - an intiger of a given speed in kilometers per hour
 4. epsgCode - an EPSG code that indicates the final projection of exported files
