@@ -9,7 +9,7 @@ from cmd import Cmd
 from convex_hull_isochrones import ConvexHullIsochrones
 from detailed_isochrones import DetailedIsochrones
 from buffer_isochrones import BufferIsochrones
-from config import PROJECT_DIR, networkType, tripTimes, travelSpeed
+from config import PROJECT_DIR, networkType, tripTimes, travelSpeed, epsgCode, networkDistance
 
 
 class CLI(Cmd):
@@ -47,7 +47,7 @@ class CLI(Cmd):
             - Plotting single point isochrone (y/n)
             - Naming the export files.
         """
-        x = ConvexHullIsochrones(networkType, tripTimes, travelSpeed)
+        x = ConvexHullIsochrones(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
         x.createConvexHullIsochrones()
 
         print('Would you like to plot single convex hull isochrone?')
@@ -84,8 +84,15 @@ class CLI(Cmd):
             - Plotting single point isochrone (y/n)
             - Naming the export files.
         """
-        y = DetailedIsochrones(networkType, tripTimes, travelSpeed)
+        y = DetailedIsochrones(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
         y.createDetailedIsochrones()
+
+        print('Would you like to plot detailed isochrone?')
+        print('y/n')
+        q1 = input()
+
+        if q1 == 'y':
+            y.plotDetailedIsochrone()
 
         print('Would you like to plot single point isochrone?')
         print('y/n')
@@ -114,9 +121,22 @@ class CLI(Cmd):
             - Plotting single point isochrone (y/n)
             - Naming the export files.
         """
-        y = BufferIsochrones(networkType, tripTimes, travelSpeed)
+        print('Please provide a value of edge buffer:')
+        edgeBuffer = int(input())
+        
+        print('Please provide a value of node buffer:')
+        nodeBuffer = int(input())
+
+        y = BufferIsochrones(networkType, tripTimes, travelSpeed, epsgCode, networkDistance, edgeBuffer, nodeBuffer)
         y.createBufferIsochrones()
 
+        print('Would you like to plot single buffer isochrone?')
+        print('y/n')
+        q1 = input()
+
+        if q1 == 'y':
+            y.plotBufferIsochrone()
+        
         print('Would you like to plot single point isochrone?')
         print('y/n')
         q2 = input()

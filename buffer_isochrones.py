@@ -12,12 +12,14 @@ ox.config(log_console=True, use_cache=True)
 ox.__version__
 
 class BufferIsochrones(InitClass):
-    def __init__(self, networkType, tripTimes, travelSpeed):
-        super().__init__(networkType, tripTimes, travelSpeed)
+    def __init__(self, networkType, tripTimes, travelSpeed, epsgCode, networkDistance, edgeBuffer, nodeBuffer):
+        super().__init__(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
+        self.edgeBuffer = edgeBuffer
+        self.nodeBuffer = nodeBuffer
 
     def createBufferIsochrones(self, plot=False):
         for railwayStation in latlonTuple:
-            self.G = ox.graph_from_point(railwayStation, dist=30000,
+            self.G = ox.graph_from_point(railwayStation, dist=self.networkDistance,
             dist_type='network',
             network_type=self.networkType) 
             #graph_from_point, czyli utworzenie grafu i pobranie danych
@@ -60,15 +62,15 @@ class BufferIsochrones(InitClass):
                     self.isochronePolygons.append(new_iso)
                 return self.isochronePolygons
 
-            self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=150, node_buff=10, infill=False)
-            fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
-                                    node_size=0, bgcolor='k')
-            for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
-                patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
-                ax.add_patch(patch)
-
-            if plot:        
-                plt.show()
+            self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=self.edgeBuffer , node_buff=self.nodeBuffer, infill=False)
+            if plot: 
+                fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
+                                        node_size=0, bgcolor='k')
+                for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
+                    patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+                    ax.add_patch(patch)
+            
+                    plt.show()
             else:
                 continue
 
@@ -95,10 +97,18 @@ class BufferIsochrones(InitClass):
                                     bgcolor='k', edge_linewidth=0.5, edge_color='#999999')
             plt.show()
 
+    def plotBufferIsochrone(self):
+        fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
+                                        node_size=0, bgcolor='k')
+        for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
+            patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+            ax.add_patch(patch)
+    
+            plt.show()
 
     def export(self, filename):
         #zapisanie poligonów izochron do georamki danych
         exportGdf = gpd.GeoDataFrame(geometry=gpd.GeoSeries(self.isochronePolygons))
-        exportGdf = exportGdf.set_crs(epsg=32633)
+        exportGdf = exportGdf.set_crs(epsg=self.epsgCode)
         exportGdf["TravelTime"] = [next(self.timeTable) for time in range(len(exportGdf))]
         exportGdf.to_file(f"export/{filename}.shp") #zapis do pliku w formacie ESRI Shapefile 

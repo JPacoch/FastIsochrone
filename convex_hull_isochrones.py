@@ -12,12 +12,12 @@ ox.config(log_console=True, use_cache=True)
 ox.__version__
 
 class ConvexHullIsochrones(InitClass):
-    def __init__(self, networkType, tripTimes, travelSpeed):
-        super().__init__(networkType, tripTimes, travelSpeed)
+    def __init__(self, networkType, tripTimes, travelSpeed, epsgCode, networkDistance):
+        super().__init__(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
 
     def createConvexHullIsochrones(self, plot=False):
         for railwayStation in latlonTuple:
-            self.G = ox.graph_from_point(railwayStation, dist=30000,
+            self.G = ox.graph_from_point(railwayStation, dist=self.networkDistance,
             dist_type='network',
             network_type=self.networkType) 
             #graph_from_point, czyli utworzenie grafu i pobranie danych
@@ -89,6 +89,6 @@ class ConvexHullIsochrones(InitClass):
     def export(self, filename):
         #zapisanie poligonów izochron do georamki danych
         exportGdf = gpd.GeoDataFrame(geometry=gpd.GeoSeries(self.isochronePolygons))
-        exportGdf = exportGdf.set_crs(epsg=32633)
+        exportGdf = exportGdf.set_crs(epsg=self.epsgCode)
         exportGdf["TravelTime"] = [next(self.timeTable) for time in range(len(exportGdf))]
         exportGdf.to_file(f"export/{filename}.shp") #zapis do pliku w formacie ESRI Shapefile 

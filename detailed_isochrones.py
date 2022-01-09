@@ -12,12 +12,12 @@ ox.config(log_console=True, use_cache=True)
 ox.__version__
 
 class DetailedIsochrones(InitClass):
-    def __init__(self, networkType, tripTimes, travelSpeed):
-        super().__init__(networkType, tripTimes, travelSpeed)
+    def __init__(self, networkType, tripTimes, travelSpeed, epsgCode, networkDistance):
+        super().__init__(networkType, tripTimes, travelSpeed, epsgCode, networkDistance)
 
     def createDetailedIsochrones(self, plot=False):
         for railwayStation in latlonTuple:
-            self.G = ox.graph_from_point(railwayStation, dist=30000,
+            self.G = ox.graph_from_point(railwayStation, dist=self.networkDistance,
             dist_type='network',
             network_type=self.networkType) 
             #graph_from_point, czyli utworzenie grafu i pobranie danych
@@ -61,13 +61,14 @@ class DetailedIsochrones(InitClass):
                 return self.isochronePolygons
 
             self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=25, node_buff=0, infill=True)
-            fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
-                                    node_size=0, bgcolor='k')
-            for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
-                patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
-                ax.add_patch(patch)
 
-            if plot:        
+            if plot: 
+                fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
+                                        node_size=0, bgcolor='k')
+                for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
+                    patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+                    ax.add_patch(patch)
+        
                 plt.show()
             else:
                 continue
@@ -94,11 +95,20 @@ class DetailedIsochrones(InitClass):
             fig, ax = ox.plot_graph(self.G, node_color=self.plotNodeColour, node_size=self.plotNodeSize, node_alpha=0.6, node_zorder=2,
                                     bgcolor='k', edge_linewidth=0.5, edge_color='#999999')
             plt.show()
+        
+    def plotDetailedIsochrone(self):
+            fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
+                                    node_size=0, bgcolor='k')
+            for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
+                patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+                ax.add_patch(patch)
+    
+            plt.show()
 
 
     def export(self, filename):
         #zapisanie poligonów izochron do georamki danych
         exportGdf = gpd.GeoDataFrame(geometry=gpd.GeoSeries(self.isochronePolygons))
-        exportGdf = exportGdf.set_crs(epsg=32633)
+        exportGdf = exportGdf.set_crs(epsg=self.epsgCode)
         exportGdf["TravelTime"] = [next(self.timeTable) for time in range(len(exportGdf))]
         exportGdf.to_file(f"export/{filename}.shp") #zapis do pliku w formacie ESRI Shapefile 
