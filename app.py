@@ -9,7 +9,7 @@ from cmd import Cmd
 from convex_hull_isochrones import ConvexHullIsochrones
 from detailed_isochrones import DetailedIsochrones
 from buffer_isochrones import BufferIsochrones
-from config import networkType, tripTimes, travelSpeed
+from config import PROJECT_DIR, networkType, tripTimes, travelSpeed
 
 
 class CLI(Cmd):
