@@ -24,10 +24,8 @@ class DetailedIsochrones(InitClass):
             #przez okreslone miejsce (punkt) w przygotowanej georamce danych 
 
             self.gdfNodes = ox.graph_to_gdfs(self.G, edges=False) #przeniesienie pobranego grafu do georamki danych
-
-            x, y = self.gdfNodes['geometry'].unary_union.centroid.xy #wyszukiwanie węzła w sieci najbliższego współrzędnym punktu (stacj)
+            x, y = self.gdfNodes['geometry'].unary_union.centroid.xy #wyszukiwanie węzła w sieci najbliższego współrzędnym punktu (stacji)
             self.centerNode = ox.get_nearest_node(self.G, (y[0], x[0])) #punkt w sieci najbliższy wybranej stacji kolejowej
-
             self.G = ox.project_graph(self.G) #reprojekcja grafu do odpowiedniego układu współrzędnych WGS84 UTM - dla obszaru badań
             #jest do WGS84/UTM ZONE 33N (epsg:32633)
 
@@ -51,13 +49,12 @@ class DetailedIsochrones(InitClass):
 
                     n = self.nodesGDF.buffer(node_buff).geometry
                     e = gpd.GeoSeries(self.edgeLines).buffer(edge_buff).geometry
-                    all_gs = list(n) + list(e)
-                    new_iso = gpd.GeoSeries(all_gs).unary_union
+                    allGeoSeries = list(n) + list(e)
+                    newIso = gpd.GeoSeries(allGeoSeries).unary_union
                     
-                    # try to fill in surrounded areas so shapes will appear solid and blocks without white space inside them
                     if infill:
-                        new_iso = Polygon(new_iso.exterior)
-                    self.isochronePolygons.append(new_iso)
+                        newIso = Polygon(newIso.exterior)
+                    self.isochronePolygons.append(newIso)
                 return self.isochronePolygons
 
             self.isochronePolygonsVis = make_iso_polys(self.G, edge_buff=25, node_buff=0, infill=True)
