@@ -24,7 +24,7 @@ class CLI(Cmd):
 ╚═╝░░░░░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝╚══════╝
 
     Welcome to FastIsochrone 0.2.1
-    Creator homepage:                                https://jpacoch.github.io
+    Creator's homepage:                              https://jpacoch.github.io
     Help is availible with the command:              help
     When ready to quit, enter:                       quit
 
