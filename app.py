@@ -23,13 +23,13 @@ class CLI(Cmd):
 ██║░░░░░██║░░██║██████╔╝░░░██║░░░██║██████╔╝╚█████╔╝╚█████╔╝██║░░██║██║░░██║╚█████╔╝██║░╚███║███████╗
 ╚═╝░░░░░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝╚══════╝
 
-    Welcome to FastIsochrone 0.2.1
+    Welcome to FastIsochrone 0.2.2
     Creator's homepage:                              https://jpacoch.github.io
     Help is availible with the command:              help
     When ready to quit, enter:                       quit
 
     Type ? to list commands."""
-    prompt = 'FastIsochrone 0.2.1> '
+    prompt = 'FastIsochrone 0.2.2> '
 
     def do_create_convexhull_iso(self, empty_args):
         """

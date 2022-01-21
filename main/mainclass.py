@@ -14,4 +14,4 @@ class InitClass():
         self.epsgCode = epsgCode
         self.networkDistance = networkDistance
         self.timeTable = cycle([25,20,15,10,5]) 
-        self.isochroneColours = ox.plot.get_colors(n=len(self.tripTimes), cmap='plasma', start=0, return_hex=True)
+        self.isochroneColours = ox.plot.get_colors(n=len(self.tripTimes), cmap='BuPu_r', start=0, return_hex=True)

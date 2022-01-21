@@ -44,7 +44,7 @@ class ConvexHullIsochrones(InitClass):
 
             if plot:
                 fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.3,
-                            node_size=0.1, bgcolor='k')
+                            node_size=0.1, bgcolor='w')
                 for polygon, fColour in zip(self.isochronePolygons, self.isochroneColours):
                     polyPatch = PolygonPatch(polygon, fc=fColour, ec='none', alpha=0.6, zorder=-1)
                     ax.add_patch(polyPatch)
@@ -72,13 +72,13 @@ class ConvexHullIsochrones(InitClass):
 
             #utworzenie wykresu (mapy) węzłów o kolorze izochron
             fig, ax = ox.plot_graph(self.G, node_color=self.plotNodeColour, node_size=self.plotNodeSize, node_alpha=0.6, node_zorder=2,
-                                    bgcolor='k', edge_linewidth=0.5, edge_color='#999999')
+                                    bgcolor='w', edge_linewidth=0.5, edge_color='#999999')
             plt.show()
 
     def plotConvexHullIsochrone(self):
             #utworzenie wykresu (mapy) wygładzonych izochron
         fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.3,
-                                node_size=0.1, bgcolor='k')
+                                node_size=0.1, bgcolor='w')
         for polygon, fColour in zip(self.isochronePolygons, self.isochroneColours):
             self.polyPatch = PolygonPatch(polygon, fc=fColour, ec='none', alpha=0.6, zorder=-1)
             ax.add_patch(self.polyPatch)

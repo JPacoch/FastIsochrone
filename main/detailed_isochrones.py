@@ -61,9 +61,9 @@ class DetailedIsochrones(InitClass):
 
             if plot: 
                 fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
-                                        node_size=0, bgcolor='k')
-                for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
-                    patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
+                                        node_size=0, bgcolor='w')
+                for polygon, fColour in zip(self.isochronePolygonsVis, self.isochroneColours):
+                    patch = PolygonPatch(polygon, fc=fColour, ec='none', alpha=0.6, zorder=-1)
                     ax.add_patch(patch)
         
                 plt.show()
@@ -90,12 +90,12 @@ class DetailedIsochrones(InitClass):
 
             #utworzenie wykresu (mapy) węzłów o kolorze izochron
             fig, ax = ox.plot_graph(self.G, node_color=self.plotNodeColour, node_size=self.plotNodeSize, node_alpha=0.6, node_zorder=2,
-                                    bgcolor='k', edge_linewidth=0.5, edge_color='#999999')
+                                    bgcolor='w', edge_linewidth=0.5, edge_color='#999999')
             plt.show()
         
     def plotDetailedIsochrone(self):
             fig, ax = ox.plot_graph(self.G, show=False, close=False, edge_color='#999999', edge_alpha=0.2,
-                                    node_size=0, bgcolor='k')
+                                    node_size=0, bgcolor='w')
             for polygon, fc in zip(self.isochronePolygonsVis, self.isochroneColours):
                 patch = PolygonPatch(polygon, fc=fc, ec='none', alpha=0.6, zorder=-1)
                 ax.add_patch(patch)
