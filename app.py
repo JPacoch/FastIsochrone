@@ -6,10 +6,10 @@ Command line interface - interactive.
 import sys
 import os
 from cmd import Cmd
-from main.convex_hull_isochrones import ConvexHullIsochrones
-from main.detailed_isochrones import DetailedIsochrones
-from main.buffer_isochrones import BufferIsochrones
-from main.config import PROJECT_DIR, networkType, tripTimes, travelSpeed, epsgCode, networkDistance
+from FastIsochrone.convex_hull_isochrones import ConvexHullIsochrones
+from FastIsochrone.detailed_isochrones import DetailedIsochrones
+from FastIsochrone.buffer_isochrones import BufferIsochrones
+from FastIsochrone.config import PROJECT_DIR, networkType, tripTimes, travelSpeed, epsgCode, networkDistance
 
 
 class CLI(Cmd):
