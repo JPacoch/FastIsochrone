@@ -4,7 +4,6 @@ Command line interface - interactive.
 """
 
 import sys
-import os
 from cmd import Cmd
 from FastIsochrone.convex_hull_isochrones import ConvexHullIsochrones
 from FastIsochrone.detailed_isochrones import DetailedIsochrones
@@ -160,6 +159,13 @@ class CLI(Cmd):
             Result: Quit the command line interface.      
         """
         sys.exit()
+
+    def do_exit(self, inp):
+        print("Bye")
+        return True
+        
+    do_EOF = do_exit
+
 
 
 if __name__ == '__main__':

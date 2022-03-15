@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fastisochrone:
+    image: fastisochrone
+    build:
+      context: .
+      dockerfile: ./Dockerfile
